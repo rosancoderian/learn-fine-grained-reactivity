@@ -42,6 +42,15 @@
       const quantity = state(3)
       const total = computed(() => price.get() * quantity.get())
 
+      const price2 = state(5)
+      const quantity2 = state(1)
+      const total2 = computed(() => price2.get() * quantity2.get())
+
+      const calcAllTotal = state(true)
+      const allTotal = computed(() =>
+        calcAllTotal.get() ? total.get() + total2.get() : 'N/A'
+      )
+
       effect(() => {
         document.getElementById('price').innerHTML = price.get()
       })
@@ -54,6 +63,22 @@
         document.getElementById('total').innerHTML = total.get()
       })
 
+      effect(() => {
+        document.getElementById('price2').innerHTML = price2.get()
+      })
+
+      effect(() => {
+        document.getElementById('quantity2').innerHTML = quantity2.get()
+      })
+
+      effect(() => {
+        document.getElementById('total2').innerHTML = total2.get()
+      })
+
+      effect(() => {
+        document.getElementById('allTotal').innerHTML = allTotal.get()
+      })
+
       document.getElementById('add').addEventListener('click', () => {
         quantity.set(quantity.get() + 1)
       })
@@ -61,13 +86,36 @@
       document.getElementById('subtract').addEventListener('click', () => {
         quantity.set(quantity.get() - 1)
       })
+
+      document.getElementById('add2').addEventListener('click', () => {
+        quantity2.set(quantity2.get() + 1)
+      })
+
+      document.getElementById('subtract2').addEventListener('click', () => {
+        quantity2.set(quantity2.get() - 1)
+      })
     }
   </script>
   <body>
-    <div>price:<span id="price"></span></div>
-    <div>quantity:<span id="quantity"></span></div>
-    <div>total:<span id="total"></span></div>
-    <button id="subtract">-1 quantity</button>
-    <button id="add">+1 quantity</button>
+    <table>
+      <tr>
+        <td>
+          <div>price:<span id="price"></span></div>
+          <div>quantity:<span id="quantity"></span></div>
+          <div>total:<span id="total"></span></div>
+          <button id="subtract">-1</button>
+          <button id="add">+1</button>
+        </td>
+        <td>
+          <div>price:<span id="price2"></span></div>
+          <div>quantity:<span id="quantity2"></span></div>
+          <div>total:<span id="total2"></span></div>
+          <button id="subtract2">-1</button>
+          <button id="add2">+1</button>
+        </td>
+      </tr>
+    </table>
+    Total:
+    <span id="allTotal"></span>
   </body>
 </html>
