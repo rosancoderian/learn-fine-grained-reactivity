@@ -12,7 +12,7 @@ function state(initialValue) {
   }
 
   function get() {
-    if (target) observers.add(target)
+    if (evaluatedEffect) observers.add(evaluatedEffect)
     return value
   }
 
