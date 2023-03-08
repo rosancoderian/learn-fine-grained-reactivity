@@ -32,8 +32,15 @@
         target = null
       }
 
+      function computed(fn) {
+        let computedVal = state()
+        effect(() => computedVal.set(fn()))
+        return { get: computedVal.get }
+      }
+
       const price = state(10)
       const quantity = state(3)
+      const total = computed(() => price.get() * quantity.get())
 
       effect(() => {
         document.getElementById('price').innerHTML = price.get()
@@ -44,8 +51,7 @@
       })
 
       effect(() => {
-        document.getElementById('total').innerHTML =
-          price.get() * quantity.get()
+        document.getElementById('total').innerHTML = total.get()
       })
 
       document.getElementById('add').addEventListener('click', () => {
@@ -61,7 +67,7 @@
     <div>price:<span id="price"></span></div>
     <div>quantity:<span id="quantity"></span></div>
     <div>total:<span id="total"></span></div>
-    <button id="add">+1 quantity</button>
     <button id="subtract">-1 quantity</button>
+    <button id="add">+1 quantity</button>
   </body>
 </html>
