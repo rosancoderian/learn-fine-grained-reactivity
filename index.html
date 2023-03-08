@@ -3,41 +3,9 @@
   <head>
     <title>Reactive</title>
   </head>
+  <script src="/reactive.js"></script>
   <script>
     window.onload = () => {
-      // store current effect that running for the first time
-      let target = null
-
-      function state(initialValue) {
-        const observers = new Set()
-
-        let value = initialValue
-
-        function set(newValue) {
-          value = newValue
-          observers.forEach((fn) => fn())
-        }
-
-        function get() {
-          if (target) observers.add(target)
-          return value
-        }
-
-        return { get, set }
-      }
-
-      function effect(fn) {
-        target = fn
-        target()
-        target = null
-      }
-
-      function computed(fn) {
-        let computedVal = state()
-        effect(() => computedVal.set(fn()))
-        return { get: computedVal.get }
-      }
-
       const price = state(10)
       const quantity = state(3)
       const total = computed(() => price.get() * quantity.get())
@@ -50,7 +18,6 @@
       const allTotal = computed(() =>
         calcAllTotal.get() ? total.get() + total2.get() : 'N/A'
       )
-
       effect(() => renderHtml('price', price.get()))
       effect(() => renderHtml('quantity', quantity.get()))
       effect(() => renderHtml('total', total.get()))
@@ -82,8 +49,8 @@
         calcAllTotal.set(!calcAllTotal.get())
       })
 
-      function renderHtml(elId, innerHtml) {
-        $elById(elId).innerHtml = innerHtml
+      function renderHtml(elId, innerHTML) {
+        $elById(elId).innerHTML = innerHTML
       }
 
       function renderChecked(elId, checked) {
