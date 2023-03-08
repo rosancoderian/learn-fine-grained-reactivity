@@ -51,49 +51,52 @@
         calcAllTotal.get() ? total.get() + total2.get() : 'N/A'
       )
 
-      effect(() => {
-        document.getElementById('price').innerHTML = price.get()
-      })
+      effect(() => renderHtml('price', price.get()))
+      effect(() => renderHtml('quantity', quantity.get()))
+      effect(() => renderHtml('total', total.get()))
 
-      effect(() => {
-        document.getElementById('quantity').innerHTML = quantity.get()
-      })
+      effect(() => renderHtml('price2', price2.get()))
+      effect(() => renderHtml('quantity2', quantity2.get()))
+      effect(() => renderHtml('total2', total2.get()))
 
-      effect(() => {
-        document.getElementById('total').innerHTML = total.get()
-      })
+      effect(() => renderHtml('allTotal', allTotal.get()))
+      effect(() => renderChecked('calcAllTotal', calcAllTotal.get()))
 
-      effect(() => {
-        document.getElementById('price2').innerHTML = price2.get()
-      })
-
-      effect(() => {
-        document.getElementById('quantity2').innerHTML = quantity2.get()
-      })
-
-      effect(() => {
-        document.getElementById('total2').innerHTML = total2.get()
-      })
-
-      effect(() => {
-        document.getElementById('allTotal').innerHTML = allTotal.get()
-      })
-
-      document.getElementById('add').addEventListener('click', () => {
+      $elOn('add', 'click', () => {
         quantity.set(quantity.get() + 1)
       })
 
-      document.getElementById('subtract').addEventListener('click', () => {
+      $elOn('subtract', 'click', () => {
         quantity.set(quantity.get() - 1)
       })
 
-      document.getElementById('add2').addEventListener('click', () => {
+      $elOn('add2', 'click', () => {
         quantity2.set(quantity2.get() + 1)
       })
 
-      document.getElementById('subtract2').addEventListener('click', () => {
+      $elOn('subtract2', 'click', () => {
         quantity2.set(quantity2.get() - 1)
       })
+
+      $elOn('calcAllTotal', 'click', () => {
+        calcAllTotal.set(!calcAllTotal.get())
+      })
+
+      function renderHtml(elId, innerHtml) {
+        $elById(elId).innerHtml = innerHtml
+      }
+
+      function renderChecked(elId, checked) {
+        $elById(elId).checked = checked
+      }
+
+      function $elById(id) {
+        return document.getElementById(id)
+      }
+
+      function $elOn(id, evName, fn) {
+        $elById(id).addEventListener(evName, fn)
+      }
     }
   </script>
   <body>
@@ -115,6 +118,7 @@
         </td>
       </tr>
     </table>
+    <input id="calcAllTotal" type="checkbox" />
     Total:
     <span id="allTotal"></span>
   </body>
