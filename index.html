@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Reactive</title>
+  </head>
+  <script>
+    window.onload = () => {
+      let target = null
+
+      function state(initialValue) {
+        const observers = new Set()
+
+        let value = initialValue
+
+        function set(newValue) {
+          value = newValue
+          observers.forEach((fn) => fn())
+        }
+
+        function get() {
+          if (target) observers.add(target)
+          return value
+        }
+
+        return { get, set }
+      }
+
+      function effect(fn) {
+        target = fn
+        target()
+        target = null
+      }
+
+      const price = state(10)
+      const quantity = state(3)
+
+      effect(() => {
+        document.getElementById('price').innerHTML = price.get()
+      })
+
+      effect(() => {
+        document.getElementById('quantity').innerHTML = quantity.get()
+      })
+
+      effect(() => {
+        document.getElementById('total').innerHTML =
+          price.get() * quantity.get()
+      })
+
+      document.getElementById('add').addEventListener('click', () => {
+        quantity.set(quantity.get() + 1)
+      })
+
+      document.getElementById('subtract').addEventListener('click', () => {
+        quantity.set(quantity.get() - 1)
+      })
+    }
+  </script>
+  <body>
+    <div>price:<span id="price"></span></div>
+    <div>quantity:<span id="quantity"></span></div>
+    <div>total:<span id="total"></span></div>
+    <button id="add">+1 quantity</button>
+    <button id="subtract">-1 quantity</button>
+  </body>
+</html>
