@@ -18,6 +18,7 @@
       const allTotal = computed(() =>
         calcAllTotal.get() ? total.get() + total2.get() : 'N/A'
       )
+
       effect(() => renderHtml('price', price.get()))
       effect(() => renderHtml('quantity', quantity.get()))
       effect(() => renderHtml('total', total.get()))
@@ -29,25 +30,13 @@
       effect(() => renderHtml('allTotal', allTotal.get()))
       effect(() => renderChecked('calcAllTotal', calcAllTotal.get()))
 
-      $elOn('add', 'click', () => {
-        quantity.set(quantity.get() + 1)
-      })
-
-      $elOn('subtract', 'click', () => {
-        quantity.set(quantity.get() - 1)
-      })
-
-      $elOn('add2', 'click', () => {
-        quantity2.set(quantity2.get() + 1)
-      })
-
-      $elOn('subtract2', 'click', () => {
-        quantity2.set(quantity2.get() - 1)
-      })
-
-      $elOn('calcAllTotal', 'click', () => {
+      $elOn('add', 'click', () => quantity.set(quantity.get() + 1))
+      $elOn('subtract', 'click', () => quantity.set(quantity.get() - 1))
+      $elOn('add2', 'click', () => quantity2.set(quantity2.get() + 1))
+      $elOn('subtract2', 'click', () => quantity2.set(quantity2.get() - 1))
+      $elOn('calcAllTotal', 'click', () =>
         calcAllTotal.set(!calcAllTotal.get())
-      })
+      )
 
       function renderHtml(elId, innerHTML) {
         $elById(elId).innerHTML = innerHTML

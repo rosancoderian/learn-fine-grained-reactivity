@@ -1,6 +1,7 @@
-let target = null
+let evaluatedEffect = null
 
 function state(initialValue) {
+  const dependencies = new Set()
   const observers = new Set()
 
   let value = initialValue
@@ -19,13 +20,13 @@ function state(initialValue) {
 }
 
 function effect(fn) {
-  target = fn
-  target()
-  target = null
+  evaluatedEffect = fn
+  evaluatedEffect()
+  evaluatedEffect = null
 }
 
 function computed(fn) {
-  let computedVal = state()
-  effect(() => computedVal.set(fn()))
-  return { get: computedVal.get }
+  let computedValue = state()
+  effect(() => computedValue.set(fn()))
+  return { get: computedValue.get }
 }
